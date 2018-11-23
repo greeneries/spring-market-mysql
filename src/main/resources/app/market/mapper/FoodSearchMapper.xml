@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="app.market.mapper.FoodSearchMapper">
+
+	<select id="select4Food" parameterType="map" resultType="hashmap">
+		select id, name, small_image_location, big_image_location
+		from (
+			select id, name, small_image_location, big_image_location
+			from food 
+			where food_type_id = 1
+			and id in (select food_id from food_ingredients where name like CONCAT('%',#{keyword1},'%'))
+			union
+			select id, name, small_image_location, big_image_location
+			from food 
+			where food_type_id = 1
+			and id in (select food_id from food_ingredients where name like CONCAT('%',#{keyword2},'%'))
+			union
+			select id, name, small_image_location, big_image_location
+			from food 
+			where food_type_id = 1
+			and id in (select food_id from food_ingredients where name like CONCAT('%',#{keyword3},'%'))
+		) food limit 4
+	</select>
+	
+</mapper>
